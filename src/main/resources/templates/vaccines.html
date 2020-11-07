@@ -36,9 +36,9 @@
             <td th:text="${vaccineStat.getCandidate()}"></td>
             <td th:text="${vaccineStat.getMechanism()}"></td>
             <td th:text="${vaccineStat.getSponsor()}"></td>
-            <td th:text="${vaccineStat.getPhase()}"></td>
+            <td><progress th:value="${vaccineStat.getPhaseNr()}" max="4"></progress></td>
             <td th:text="${vaccineStat.getInstitution()}"></td>
-            <td><a th:href="@{/country (id=${vaccineStat.getId()})}">Details</a></td>
+            <td><a th:href="@{/vaccineDetails (id=${vaccineStat.getId()})}">Details</a></td>
         </tr>
     </table>
 </div>

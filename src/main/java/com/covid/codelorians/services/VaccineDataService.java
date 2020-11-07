@@ -38,7 +38,6 @@ public class VaccineDataService {
 
         for (int i = 0; i < arr.length(); i++) {
             newStats.add(new VaccineStats(arr.getJSONObject(i), i + 1));
-//            System.out.println(newStats.get(i).getId());
         }
 
         this.allVaccines = newStats;

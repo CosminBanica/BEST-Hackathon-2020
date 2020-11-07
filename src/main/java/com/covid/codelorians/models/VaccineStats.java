@@ -1,9 +1,8 @@
 package com.covid.codelorians.models;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class VaccineStats {
+public class VaccineStats implements Comparable<VaccineStats> {
     private String candidate, mechanism, sponsor, phase, institution, details;
     private int id;
 
@@ -43,5 +42,29 @@ public class VaccineStats {
 
     public String getDetails() {
         return details;
+    }
+
+    public float getPhaseNr() {
+        if (phase.equals("Phase 3")) {
+            return 3;
+        }
+        if (phase.equals("Phase 2/3")) {
+            return 2.5f;
+        }
+        if (phase.equals("Phase 2")) {
+            return 2;
+        }
+        if (phase.equals("Phase 1/2")) {
+            return 1.5f;
+        }
+        if (phase.equals("Phase 1")) {
+            return 1;
+        }
+        return 0;
+    }
+
+    @Override
+    public int compareTo(VaccineStats o) {
+        return Float.compare(getPhaseNr(), o.getPhaseNr());
     }
 }
