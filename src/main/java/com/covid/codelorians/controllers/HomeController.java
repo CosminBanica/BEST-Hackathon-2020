@@ -1,5 +1,6 @@
 package com.covid.codelorians.controllers;
 
+import com.covid.codelorians.models.CovidArticle;
 import com.covid.codelorians.models.LocationStats;
 import com.covid.codelorians.models.VaccineStats;
 import com.covid.codelorians.services.CoronavirusDataService;
@@ -56,17 +57,13 @@ public class HomeController {
     @Autowired
     CovidNewsDataService covidNewsDataService;
 
-//    @GetMapping("/vaccines")
-//    public String vaccines(Model model) {
-//        List<VaccineStats> allStats = vaccineDataService.allVaccines;
-//        model.addAttribute("vaccineStats", allStats);
-//        return "vaccines";
-//    }
-//
-//    @GetMapping(value="/do-alphabetical")
-//    public String doAlphabetical(Model model) {
-//        return home(model);
-//    }
+    @GetMapping("/news")
+    public String news(Model model) {
+        List<CovidArticle> newArticles = covidNewsDataService.allArticles;
+        model.addAttribute("covidNews", newArticles);
+        return "news";
+    }
+
 
     @GetMapping(value="/do-ordered")
     public String doOrdered(Model model) {
