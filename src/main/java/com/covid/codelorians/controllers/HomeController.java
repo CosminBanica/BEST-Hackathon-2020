@@ -56,8 +56,6 @@ public class HomeController {
         List<LocationStats> allStats = coronavirusDataService.allStates;
         int totalReportedCases = allStats.stream().mapToInt(stat -> stat.getLatestTotalCases()).sum();
         int totalNewCases = allStats.stream().mapToInt(stat -> stat.getDelta()).sum();
-//        Comparator<LocationStats> compareById = (LocationStats o1, LocationStats o2) -> o1.getDelta().compareTo( o2.getDelta() );
-//        Collections.sort(employees, compareById);
         Collections.sort(allStats);
         int index = 1;
         for (LocationStats obj : allStats) {
@@ -76,11 +74,11 @@ public class HomeController {
         List<LocationStats> locations = coronavirusDataService.allStates;
         LocationStats myLocation = new LocationStats();
         for (LocationStats location : locations) {
-            if (location.getId() == locationId);
-            myLocation = location;
-            break;
+            if (location.getId() == locationId) {
+                myLocation = location;
+                break;
+            }
         }
-        System.out.println(myLocation.getCountry() + " " + locationId);
         model.addAttribute("location", myLocation);
         return "country-stat";
     }
