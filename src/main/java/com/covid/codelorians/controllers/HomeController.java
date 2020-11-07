@@ -17,7 +17,7 @@ public class HomeController {
     @Autowired
     CoronavirusDataService coronavirusDataService;
 
-    @GetMapping("/")
+    @GetMapping("/reported-cases")
     public String home(Model model){
         List<LocationStats> allStats = coronavirusDataService.allStates;
         int totalReportedCases = allStats.stream().mapToInt(stat -> stat.getDelta()).sum();
@@ -31,7 +31,7 @@ public class HomeController {
         model.addAttribute("locationStats", allStats);
         model.addAttribute("totalReportedCases", totalReportedCases);
         model.addAttribute("totalNewCases", totalNewCases);
-        return "index";
+        return "reported-cases";
     }
 
     @GetMapping(value="/do-alphabetical")
@@ -55,7 +55,7 @@ public class HomeController {
         model.addAttribute("locationStats", allStats);
         model.addAttribute("totalReportedCases", totalReportedCases);
         model.addAttribute("totalNewCases", totalNewCases);
-        return "index";
+        return "reported-cases";
     }
 
     @GetMapping(value = "/country")

@@ -9,43 +9,7 @@
 </head>
 
 <body>
-<div class="container">
-    <h1><span style="color: darkgreen">Coronavirus</span> Tracker Application</h1>
-    <p>This application lists the current number of cases reported around the globe</p>
-    <!--<p th:text="${testName}"></p>-->
-
-    <div class="jumbotron">
-        <h1 class="display-4" th:text="${totalNewCases}"></h1>
-        <p class="lead">Total cases reported since today</p>
-        <hr class="my-4">
-        <h1 class="display-4" th:text="${totalReportedCases}"></h1>
-        <p class="lead">Total new cases</p>
-    </div>
-
-    <button type="button" class="btn btn-outline-success" style="margin-right: 0.5%" th:onclick="|window.location.href='/do-alphabetical'|">Alphabetical Order</button>
-    <button type="button" class="btn btn-outline-success" th:onclick="|window.location.href='/do-ordered'|">Descending Order</button>
-
-    <table class="table">
-        <tr>
-            <th>Position</th>
-            <th>Country</th>
-            <th>State</th>
-            <th>Total Cases</th>
-            <th>New Cases</th>
-            <th>Rate</th>
-            <th>Statitics</th>
-        </tr>
-        <tr th:each="locationStat : ${locationStats}">
-            <td th:text="${locationStat.getPosition()}"></td>
-            <td th:text="${locationStat.getCountry()}"></td>
-            <td th:text="${locationStat.getState()}"></td>
-            <td th:text="${locationStat.getLatestTotalCases()}"></td>
-            <td th:text="${locationStat.getDelta()}"></td>
-            <td th:text="${locationStat.getIncShow()}"></td>
-            <td><a th:href="@{/country (id=${locationStat.getId()})}">View</a></td>
-        </tr>
-    </table>
-</div>
+    <h1 class="h1">Codelorians</h1>
 </body>
 
 </html>
