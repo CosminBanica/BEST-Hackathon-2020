@@ -94,6 +94,8 @@ public class HomeController {
             }
         }
         model.addAttribute("location", myLocation);
+        model.addAttribute("totalCases", "Total cases: " + myLocation.showNumber(myLocation.getLatestTotalCases()));
+        model.addAttribute("casesString", "Today's new reported coronavirus cases: " + myLocation.showNumber(myLocation.getDelta()));
         return "country-stat";
     }
 }

@@ -12,3 +12,13 @@
 body {
     background-color: #f7f7f0;
 }
+
+.countryLine {
+    position: relative;
+    font-family: 'Montserrat', sans-serif;
+    width: 60vw;
+    font-size: 150%;
+    font-family: 'Montserrat', sans-serif;
+    top: 10vh;
+    left: 0vw;
+}

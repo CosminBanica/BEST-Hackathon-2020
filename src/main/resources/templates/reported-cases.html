@@ -19,7 +19,7 @@
         <a class="topbutton" href="#about">About</a>
     </div>
 <div class="container">
-    <h1 class="pageTitle"><span style="color: darkgreen">Coronavirus</span>  updated statistics</h1>
+    <h1 class="pageTitle"><span style="color: darkgreen">Coronavirus</span> updated statistics</h1>
 
     <div class="jumbotron" style="background-color: #3c6634; color: white">
         <h1 class="display-4" th:text="${totalReportedCases}"></h1>
@@ -30,7 +30,7 @@
     </div>
 
     <button type="button" class="btn btn-outline-success" style="margin-right: 0.5%" th:onclick="|window.location.href='/do-alphabetical'|">Alphabetical Order</button>
-    <button type="button" class="btn btn-outline-success" th:onclick="|window.location.href='/do-ordered'|">Descending Order</button>
+    <button type="button" class="btn btn-outline-success" th:onclick="|window.location.href='/do-ordered'|">Order by new Cases</button>
 
     <table class="table">
         <tr>
@@ -39,17 +39,17 @@
             <th>State</th>
             <th>Total Cases</th>
             <th>New Cases</th>
-            <th>Rate</th>
-            <th>Statitics</th>
+            <th>Growth Rate</th>
+            <th>Statistics</th>
         </tr>
         <tr th:each="locationStat : ${locationStats}">
             <td th:text="${locationStat.getPosition()}"></td>
             <td th:text="${locationStat.getCountry()}"></td>
             <td th:text="${locationStat.getState()}"></td>
-            <td th:text="${locationStat.showNumber(locationStat.getLatestTotalCases())}"></td>
-            <td th:text="${locationStat.showNumber(locationStat.getDelta())}"></td>
-            <td th:text="${locationStat.getIncShow()}"></td>
-            <td><a th:href="@{/country (id=${locationStat.getId()})}">View</a></td>
+            <td style="text-align: center" th:text="${locationStat.showNumber(locationStat.getLatestTotalCases())}"></td>
+            <td style="text-align: center" th:text="${locationStat.showNumber(locationStat.getDelta())}"></td>
+            <td style="text-align: center" th:text="${locationStat.getIncShow()}"></td>
+            <td style="text-align: center"><a th:href="@{/country (id=${locationStat.getId()})}">View</a></td>
         </tr>
     </table>
 </div>
