@@ -6,6 +6,7 @@ body {
 .topnav {
     overflow: hidden;
     background-color: #333;
+    height: 5.5vh;
 }
 
 .topnav a {
@@ -47,7 +48,7 @@ body {
 }
 
 .homeBody {
-    height: 94.3vh;
+    height: 94.5vh;
     width: 100vw;
     align-items: center;
     background-color: #e3e0cc;
