@@ -12,12 +12,12 @@ public class VaccineStats {
     }
 
     public VaccineStats(JSONObject object, int id) {
-        String candidate = object.getString("candidate");
-        String mechanism = object.getString("mechanism");
-        String sponsor = object.getJSONArray("sponsors").toString();
-        String phase = object.getString("trialPhase");
-        String institution = object.getJSONArray("institutions").toString();
-        String details = object.getString("details");
+        candidate = object.getString("candidate");
+        mechanism = object.getString("mechanism");
+        sponsor = object.getJSONArray("sponsors").join(",");
+        phase = object.getString("trialPhase");
+        institution = object.getJSONArray("institutions").join(",");
+        details = object.getString("details");
         this.id = id;
     }
 
