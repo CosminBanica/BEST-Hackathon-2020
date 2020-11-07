@@ -6,23 +6,29 @@
     <title>Coronavirus Tracker Application</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-
+    <link th:href="@{/styles/index.css}" rel="stylesheet" />
 
 </head>
 
 <body>
-
-<div class="container">
-    <h1><span style="color: darkgreen">Coronavirus</span> Tracker Application</h1>
-    <p>This application lists the current number of cases reported around the globe</p>
-    <!--<p th:text="${testName}"></p>-->
-
-    <div class="jumbotron">
-        <h1 class="display-4" th:text="${location.getCountry()}"></h1>
-        <p class="lead"  th:text="${location.getCasesString()}"> Total cases reported since today</p>
+    <div class="topnav">
+        <a class="homebutton" th:onclick="|window.location.href='/'|">Home</a>
+        <a class="topbutton" th:onclick="|window.location.href='/reported-cases'|">Reported Cases</a>
+        <a class="topbutton" href="#contact">Contact</a>
+        <a class="topbutton" href="#about">About</a>
     </div>
 
-</div>
+    <div class="container">
+        <h1><span style="color: darkgreen">Coronavirus</span> Tracker Application</h1>
+        <p>This application lists the current number of cases reported around the globe</p>
+        <!--<p th:text="${testName}"></p>-->
+
+        <div class="jumbotron">
+            <h1 class="display-4" th:text="${location.getCountry()}"></h1>
+            <p class="lead"  th:text="${location.getCasesString()}"> Total cases reported since today</p>
+        </div>
+
+    </div>
 
 </body>
 
