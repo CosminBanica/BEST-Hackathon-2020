@@ -21,7 +21,7 @@
     <a class="topbutton" href="#about">About</a>
 </div>
 <div class="container">
-    <h1 class="pageTitle"><span style="color: darkgreen">Tweets</span> progress</h1>
+    <h1 class="pageTitle"><span style="color: darkgreen">Latest</span> tweets</h1>
 
     <table class="table">
         <tr>
@@ -31,7 +31,7 @@
         </tr>
         <tr th:each="tweet : ${covidTweets}">
             <td th:text="${tweet.getAuthor()}"></td>
-            <td th:text="${tweet.getProfilePicUrl()}"></td>
+            <td><img th:src="@{${tweet.getPic()}}"></td>
             <td th:text="${tweet.getText()}"></td>
         </tr>
     </table>

@@ -23,4 +23,8 @@ public class Tweet {
     public String getProfilePicUrl() {
         return profilePicUrl;
     }
+
+    public String getPic() {
+        return profilePicUrl;
+    }
 }

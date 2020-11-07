@@ -24,15 +24,15 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-//@Service
+@Service
 public class TweetStreamService {
     private static String DATA_URL = "https://api.twitter.com/2/tweets/search/stream?expansions=author_id&user.fields=profile_image_url";
     private InputStream inputStream;
     private Queue<Tweet> tweets = new LinkedList<>();
     Scanner scanner;
 
-//    @PostConstruct
-//    @Scheduled(cron = "* * 1 * * *")
+    @PostConstruct
+    @Scheduled(cron = "* * 1 * * *")
     public void fetchData() throws IOException, InterruptedException {
         List<Tweet> newTweets = new ArrayList<>();
         HttpClient client = HttpClient.newHttpClient();
@@ -40,7 +40,8 @@ public class TweetStreamService {
 
         HttpURLConnection connection = (HttpURLConnection) new URL(DATA_URL).openConnection();
         connection.setRequestMethod("GET");
-        connection.setRequestProperty("Authorization", "Bearer AAAAAAAAAAAAAAAAAAAAAHAUJgEAAAAADcGAP6w0a%2B%2B1Sn4cRyYZaSi7%2FdQ%3DuXZqJZMUb2HXx51NIhnWp7yGD0wenYnyWs7PN0x2aWglImQJXK");
+        connection.setRequestProperty("Authorization", "Bearer AAAAAAAAAAAAAAAAAAAAAHAUJgEAAAAAyjN1T5DPjhvvnvqodS1AICHgjMk%3DipyQ8MyZbqgDXYgLfOIVsxXoJ7KYvQuUGe8Qzrt4GiYQfeF5Fq");
+
 
         inputStream = connection.getInputStream();
         scanner = new Scanner(inputStream, StandardCharsets.UTF_8.name());
