@@ -16,8 +16,8 @@
         <a class="homebutton" th:onclick="|window.location.href='/'|">Home</a>
         <a class="topbutton" th:onclick="|window.location.href='/reported-cases'|">Reported Cases</a>
         <a class="topbutton" th:onclick="|window.location.href='/vaccines'|">Vaccines</a>
-        <a class="topbutton" th:onclick="|window.location.href='/news'|">Vaccines</a>
-        <a class="topbutton" th:onclick="|window.location.href='/tweets'|">Vaccines</a>
+        <a class="topbutton" th:onclick="|window.location.href='/news'|">News</a>
+        <a class="topbutton" th:onclick="|window.location.href='/tweets'|">Tweets</a>
         <a class="topbutton" href="#about">About</a>
     </div>
 <div class="container">
@@ -31,19 +31,22 @@
         <p class="lead">Total new cases</p>
     </div>
 
-    <button type="button" class="btn btn-outline-success" style="margin-right: 0.5%" th:onclick="|window.location.href='/do-alphabetical'|">Alphabetical Order</button>
-    <button type="button" class="btn btn-outline-success" th:onclick="|window.location.href='/do-ordered'|">Order by new Cases</button>
+    <button type="button" class="btn btn-outline-success" style="margin-right: 0.5%" th:onclick="|window.location.href='/reported-cases'|">Alphabetical Order</button>
+    <button type="button" class="btn btn-outline-success" style="margin-right: 0.5%" th:onclick="|window.location.href='/do-ordered'|">Order by new Cases</button>
+    <button type="button" class="btn btn-outline-success" style="margin-right: 0.5%" th:onclick="|window.location.href='/do-ordered-total'|">Order by Total Cases</button>
+    <button type="button" class="btn btn-outline-success" style="margin-right: 0.5%" th:onclick="|window.location.href='/do-ordered-deaths'|">Order by new Deaths</button>
+    <button type="button" class="btn btn-outline-success" style="margin-right: 0.5%" th:onclick="|window.location.href='/do-ordered-deaths-total'|">Order by Total Deaths</button>
 
-    <table class="table">
+    <table class="table" style="margin-top: 2vh;">
         <tr>
             <th>Position</th>
             <th>Country</th>
             <th>State</th>
-            <th>Total Cases</th>
-            <th>New Cases</th>
-            <th>Cases Growth Rate</th>
-            <th>Total Deaths</th>
-            <th>New Deaths</th>
+            <th style="text-align: center">Total Cases</th>
+            <th style="text-align: center">New Cases</th>
+            <th style="text-align: center">Cases Growth Rate</th>
+            <th style="text-align: center">Total Deaths</th>
+            <th style="text-align: center">New Deaths</th>
             <th>Statistics</th>
         </tr>
         <tr th:each="locationStat : ${locationStats}">

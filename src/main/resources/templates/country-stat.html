@@ -19,9 +19,13 @@
 
         function drawChart() {
             var tara = document.getElementById("country").value;
+            var morti = document.getElementById("deathsList").value;
             var lista = tara.split`,`.map(x=>+x);
+            var mortilista = morti.split`,`.map(x=>+x);
             var theRemovedElement = lista.shift();
             var theRemovedElement = lista.pop();
+            var theRemovedElement = mortilista.shift();
+            var theRemovedElement = mortilista.pop();
             // console.log(lista);
             // console.log(lista.length);
             var i = 0;
@@ -32,18 +36,30 @@
                 listArray.push(element);
                 // console.log(lista[i]);
             }
+
+            var j = 0;
+            var listDeths = [];
+            listDeths.push(['Month', 'New Deaths']);
+            for(j = 0; j < mortilista.length; j = j + 1) {
+                var element = [j, mortilista[j]];
+                listDeths.push(element);
+                // console.log(lista[i]);
+            }
             // console.log(listArray);
             var data = google.visualization.arrayToDataTable(listArray);
+            var data2 = google.visualization.arrayToDataTable(listDeths);
 
             var options = {
-                title: 'Company Performance',
+                title: 'Daily Statistic',
                 curveType: 'function',
                 legend: { position: 'bottom' }
             };
 
             var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+            var chart2 = new google.visualization.LineChart(document.getElementById('curve_chart2'));
 
             chart.draw(data, options);
+            chart2.draw(data2, options);
         }
     </script>
 
@@ -54,8 +70,8 @@
         <a class="homebutton" th:onclick="|window.location.href='/'|">Home</a>
         <a class="topbutton" th:onclick="|window.location.href='/reported-cases'|">Reported Cases</a>
         <a class="topbutton" th:onclick="|window.location.href='/vaccines'|">Vaccines</a>
-        <a class="topbutton" th:onclick="|window.location.href='/news'|">Vaccines</a>
-        <a class="topbutton" th:onclick="|window.location.href='/tweets'|">Vaccines</a>
+        <a class="topbutton" th:onclick="|window.location.href='/news'|">News</a>
+        <a class="topbutton" th:onclick="|window.location.href='/tweets'|">Tweets</a>
         <a class="topbutton" href="#about">About</a>
     </div>
 
@@ -70,8 +86,13 @@
         <h1 class="countryLine" th:text="${casesString}">Today's new cases</h1>
 
         <input id="country" type="hidden" th:value="${location.getDailyCases()}"/>
+        <input id="deathsList" type="hidden" th:value="${deathArray}"/>
 
-        <div id="curve_chart" style="position: relative; width: 900px; height: 500px;left: 5vw; top: 15vh; margin-bottom: 20vh; border-style: solid; border-color: black"></div>
+        <div id="curve_chart" style="position: relative; width: 50vw; height: 50vh;left: 4vw; margin-top: 5vh; margin-bottom: 10vh; border-style: solid; border-color: black"></div>
+
+        <h1 class="countryLine" th:text="${deaths}">Today's new cases</h1>
+
+        <div id="curve_chart2" style="position: relative; width: 50vw; height: 50vh;left: 4vw; margin-top: 5vh; margin-bottom: 10vh; border-style: solid; border-color: black"></div>
 
     </div>
 

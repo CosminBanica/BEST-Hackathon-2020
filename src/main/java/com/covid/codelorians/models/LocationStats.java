@@ -1,6 +1,8 @@
 package com.covid.codelorians.models;
 
+import com.covid.codelorians.services.CoronavirusDataService;
 import com.covid.codelorians.utils.NumberUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,8 @@ public class LocationStats implements Comparable<LocationStats>{
     private List<Integer> cases;
     private List<Integer> dailyCases = new ArrayList<>();
     private String casesString;
+    private int newDeaths;
+    private int totalDeaths;
 
     @Override
     public String toString() {
@@ -32,6 +36,22 @@ public class LocationStats implements Comparable<LocationStats>{
     public int compareTo(LocationStats obj) {
         return (this.getDelta() > obj.getDelta() ? -1 :
                 (this.getDelta() == obj.getDelta() ? 0 : 1));
+    }
+
+    public void setNewDeaths(int newDeaths) {
+        this.newDeaths = newDeaths;
+    }
+
+    public int getNewDeaths() {
+        return newDeaths;
+    }
+
+    public int getTotalDeaths() {
+        return totalDeaths;
+    }
+
+    public void setTotalDeaths(int totalDeaths) {
+        this.totalDeaths = totalDeaths;
     }
 
     public int getId() {
