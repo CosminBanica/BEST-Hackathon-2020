@@ -61,11 +61,15 @@ public class HomeController {
     @GetMapping(value = "/country")
     public String countryStat(Model model, HttpServletRequest request) {
         int locationId = Integer.parseInt(request.getParameter("id"));
-        LocationStats location = coronavirusDataService.allStates.get(locationId);
-        System.out.println(location + " " + locationId);
-//        System.out.println("this guy up there");
-//        model.addObject("contact", contact);
-        model.addAttribute("location", location);
+        List<LocationStats> locations = coronavirusDataService.allStates;
+        LocationStats myLocation = new LocationStats();
+        for (LocationStats location : locations) {
+            if (location.getId() == locationId);
+            myLocation = location;
+            break;
+        }
+        System.out.println(myLocation.getCountry() + " " + locationId);
+        model.addAttribute("location", myLocation);
         return "country-stat";
     }
 }
