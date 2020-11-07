@@ -39,7 +39,6 @@ public class CovidNewsDataService {
 
         for (int i = 0; i < arr.length(); i++) {
             newArticles.add(new CovidArticle(arr.getJSONObject(i), i + 1));
-            System.out.println(newArticles.get(i).getAuthor());
         }
 
         this.allArticles = newArticles;
