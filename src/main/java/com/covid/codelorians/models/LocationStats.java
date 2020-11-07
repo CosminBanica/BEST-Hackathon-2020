@@ -1,5 +1,7 @@
 package com.covid.codelorians.models;
 
+import com.covid.codelorians.utils.NumberUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,8 +121,6 @@ public class LocationStats implements Comparable<LocationStats>{
     }
 
     public void computeDailyCases() {
-//        System.out.println(getCountry() + "  " + cases.size());
-//        System.out.println("Cases: " + cases);
         for (int i = 0; i < cases.size() - 1; i++) {
             dailyCases.add(cases.get(i + 1) - cases.get(i));
         }
@@ -129,17 +129,18 @@ public class LocationStats implements Comparable<LocationStats>{
     public void analize() {
         double average = 0;
         int count = 0;
-//        System.out.println(country + dailyCases);
         for (int i = dailyCases.size() - 1; i >= dailyCases.size() - 14; i--) {
             if (dailyCases.get(i - 1) == 0 || dailyCases.get(i) == 0) {
                 continue;
             }
             average += ((double)dailyCases.get(i)  / dailyCases.get(i - 1));
             count++;
-//            System.out.println(dailyCases.get(i) + " " + dailyCases.get(i - 1) + " " + average + " " + count);
         }
         incProportion = average / count;
-//        System.out.println(incProportion);
         incShow = String.format("%.3f", incProportion);
+    }
+
+    public String showNumber(int number) {
+        return NumberUtil.bigNumberFormat(number);
     }
 }

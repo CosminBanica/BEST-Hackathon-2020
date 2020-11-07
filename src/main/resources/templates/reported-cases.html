@@ -46,8 +46,8 @@
             <td th:text="${locationStat.getPosition()}"></td>
             <td th:text="${locationStat.getCountry()}"></td>
             <td th:text="${locationStat.getState()}"></td>
-            <td th:text="${locationStat.getLatestTotalCases()}"></td>
-            <td th:text="${locationStat.getDelta()}"></td>
+            <td th:text="${locationStat.showNumber(locationStat.getLatestTotalCases())}"></td>
+            <td th:text="${locationStat.showNumber(locationStat.getDelta())}"></td>
             <td th:text="${locationStat.getIncShow()}"></td>
             <td><a th:href="@{/country (id=${locationStat.getId()})}">View</a></td>
         </tr>

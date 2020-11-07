@@ -4,6 +4,7 @@ import com.covid.codelorians.models.LocationStats;
 import com.covid.codelorians.models.VaccineStats;
 import com.covid.codelorians.services.CoronavirusDataService;
 import com.covid.codelorians.services.VaccineDataService;
+import com.covid.codelorians.utils.NumberUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,8 +23,8 @@ public class HomeController {
     @GetMapping("/reported-cases")
     public String home(Model model){
         List<LocationStats> allStats = coronavirusDataService.allStates;
-        int totalReportedCases = allStats.stream().mapToInt(stat -> stat.getDelta()).sum();
-        int totalNewCases = allStats.stream().mapToInt(stat -> stat.getLatestTotalCases()).sum();
+        int totalNewCases = allStats.stream().mapToInt(stat -> stat.getDelta()).sum();
+        int totalReportedCases = allStats.stream().mapToInt(stat -> stat.getLatestTotalCases()).sum();
         Collections.sort(allStats, LocationStats::compareAlpha);
         int index = 1;
         for (LocationStats obj : allStats) {
@@ -31,8 +32,8 @@ public class HomeController {
             index++;
         }
         model.addAttribute("locationStats", allStats);
-        model.addAttribute("totalReportedCases", totalReportedCases);
-        model.addAttribute("totalNewCases", totalNewCases);
+        model.addAttribute("totalReportedCases", NumberUtil.bigNumberFormat(totalReportedCases));
+        model.addAttribute("totalNewCases", NumberUtil.bigNumberFormat(totalNewCases));
         return "reported-cases";
     }
 
@@ -54,8 +55,8 @@ public class HomeController {
     @GetMapping(value="/do-ordered")
     public String doOrdered(Model model) {
         List<LocationStats> allStats = coronavirusDataService.allStates;
-        int totalReportedCases = allStats.stream().mapToInt(stat -> stat.getLatestTotalCases()).sum();
         int totalNewCases = allStats.stream().mapToInt(stat -> stat.getDelta()).sum();
+        int totalReportedCases = allStats.stream().mapToInt(stat -> stat.getLatestTotalCases()).sum();
         Collections.sort(allStats);
         int index = 1;
         for (LocationStats obj : allStats) {
@@ -63,8 +64,8 @@ public class HomeController {
             index++;
         }
         model.addAttribute("locationStats", allStats);
-        model.addAttribute("totalReportedCases", totalReportedCases);
-        model.addAttribute("totalNewCases", totalNewCases);
+        model.addAttribute("totalReportedCases", NumberUtil.bigNumberFormat(totalReportedCases));
+        model.addAttribute("totalNewCases", NumberUtil.bigNumberFormat(totalNewCases));
         return "reported-cases";
     }
 
