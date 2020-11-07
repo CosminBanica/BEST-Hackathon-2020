@@ -22,10 +22,12 @@ body {
 .topbutton {
     color: white;
     background-color: #333;
+    height: 20%;
 }
 
 .topbutton:active {
-    background-color: rgb(44, 110, 45);
+    /*background-color: rgb(44, 110, 45);*/
+    color: #dbdec5;
 }
 
 .topbutton:hover {
@@ -36,6 +38,7 @@ body {
 .homebutton {
     background-color: rgb(44, 110, 45);
     color: white;
+    height: 5.5vh;
 }
 
 .homebutton:active {

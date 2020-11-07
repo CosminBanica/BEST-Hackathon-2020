@@ -3,6 +3,7 @@ package com.covid.codelorians.controllers;
 import com.covid.codelorians.models.LocationStats;
 import com.covid.codelorians.models.VaccineStats;
 import com.covid.codelorians.services.CoronavirusDataService;
+import com.covid.codelorians.services.CovidNewsDataService;
 import com.covid.codelorians.services.VaccineDataService;
 import com.covid.codelorians.utils.NumberUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,21 @@ public class HomeController {
     public String doAlphabetical(Model model) {
         return home(model);
     }
+
+    @Autowired
+    CovidNewsDataService covidNewsDataService;
+
+//    @GetMapping("/vaccines")
+//    public String vaccines(Model model) {
+//        List<VaccineStats> allStats = vaccineDataService.allVaccines;
+//        model.addAttribute("vaccineStats", allStats);
+//        return "vaccines";
+//    }
+//
+//    @GetMapping(value="/do-alphabetical")
+//    public String doAlphabetical(Model model) {
+//        return home(model);
+//    }
 
     @GetMapping(value="/do-ordered")
     public String doOrdered(Model model) {
