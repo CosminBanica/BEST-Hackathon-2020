@@ -1,5 +1,6 @@
 package com.covid.codelorians.services;
 
+import com.covid.codelorians.models.DeathStats;
 import com.covid.codelorians.models.LocationStats;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -19,16 +20,20 @@ import java.util.List;
 @Service
 public class CoronavirusDataService {
 
-    private static String DATA_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
+    private static String CASES_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
+    private static String DEATHS_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv";
     public List<LocationStats> allStates = new ArrayList<>();
+    public List<DeathStats> allDeaths = new ArrayList<>();
 
     @PostConstruct
     @Scheduled(cron = "* 1 * * * *")
     public void fetchData() throws IOException, InterruptedException {
+
+        // New cases
         int id = 0;
         List<LocationStats> newStats = new ArrayList<>();
         HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(DATA_URL)).build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(CASES_URL)).build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         StringReader reader = new StringReader(response.body());
         Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
@@ -51,5 +56,24 @@ public class CoronavirusDataService {
             newStats.add(locationStat);
         }
         this.allStates = newStats;
+
+        // Deaths
+        List<DeathStats> newDeaths = new ArrayList<>();
+        request = HttpRequest.newBuilder().uri(URI.create(DEATHS_URL)).build();
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        reader = new StringReader(response.body());
+        records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
+        id = 0;
+        String state, country;
+        for (CSVRecord record : records) {
+            state = record.get("Province/State");
+            country = record.get("Country/Region");
+            ArrayList<Integer> deaths = new ArrayList<>();
+            for (int i = 4; i < record.size(); ++i) {
+                deaths.add(Integer.parseInt(record.get(i)));
+            }
+            newDeaths.add(new DeathStats(deaths, state, country, id++));
+        }
+        allDeaths = newDeaths;
     }
 }
