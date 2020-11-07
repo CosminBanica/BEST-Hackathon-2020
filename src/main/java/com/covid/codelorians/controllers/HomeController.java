@@ -25,8 +25,8 @@ public class HomeController {
     @GetMapping("/reported-cases")
     public String home(Model model){
         List<LocationStats> allStats = coronavirusDataService.allStates;
-        int totalNewCases = allStats.stream().mapToInt(stat -> stat.getDelta()).sum();
-        int totalReportedCases = allStats.stream().mapToInt(stat -> stat.getLatestTotalCases()).sum();
+        int totalNewCases = allStats.stream().mapToInt(LocationStats::getDelta).sum();
+        int totalReportedCases = allStats.stream().mapToInt(LocationStats::getLatestTotalCases).sum();
         Collections.sort(allStats, LocationStats::compareAlpha);
         int index = 1;
         for (LocationStats obj : allStats) {
@@ -34,6 +34,7 @@ public class HomeController {
             index++;
         }
         model.addAttribute("locationStats", allStats);
+        model.addAttribute("deathStats", coronavirusDataService.allDeaths);
         model.addAttribute("totalReportedCases", NumberUtil.bigNumberFormat(totalReportedCases));
         model.addAttribute("totalNewCases", NumberUtil.bigNumberFormat(totalNewCases));
         return "reported-cases";
@@ -77,6 +78,7 @@ public class HomeController {
             index++;
         }
         model.addAttribute("locationStats", allStats);
+        model.addAttribute("deathStats", coronavirusDataService.allDeaths);
         model.addAttribute("totalReportedCases", NumberUtil.bigNumberFormat(totalReportedCases));
         model.addAttribute("totalNewCases", NumberUtil.bigNumberFormat(totalNewCases));
         return "reported-cases";

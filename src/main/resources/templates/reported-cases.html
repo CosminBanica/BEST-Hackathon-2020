@@ -39,7 +39,9 @@
             <th>State</th>
             <th>Total Cases</th>
             <th>New Cases</th>
-            <th>Growth Rate</th>
+            <th>Cases Growth Rate</th>
+            <th>Total Deaths</th>
+            <th>New Deaths</th>
             <th>Statistics</th>
         </tr>
         <tr th:each="locationStat : ${locationStats}">
@@ -49,6 +51,8 @@
             <td style="text-align: center" th:text="${locationStat.showNumber(locationStat.getLatestTotalCases())}"></td>
             <td style="text-align: center" th:text="${locationStat.showNumber(locationStat.getDelta())}"></td>
             <td style="text-align: center" th:text="${locationStat.getIncShow()}"></td>
+            <td style="text-align: center" th:text="${locationStat.showNumber(deathStats.get(locationStat.getId()).getTotal())}"></td>
+            <td style="text-align: center" th:text="${locationStat.showNumber(deathStats.get(locationStat.getId()).getLastIncrease())}"></td>
             <td style="text-align: center"><a th:href="@{/country (id=${locationStat.getId()})}">View</a></td>
         </tr>
     </table>
