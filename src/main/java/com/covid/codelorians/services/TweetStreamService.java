@@ -24,15 +24,15 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-@Service
+//@Service
 public class TweetStreamService {
     private static String DATA_URL = "https://api.twitter.com/2/tweets/search/stream?expansions=author_id&user.fields=profile_image_url";
     private InputStream inputStream;
     private Queue<Tweet> tweets = new LinkedList<>();
     Scanner scanner;
 
-    @PostConstruct
-    @Scheduled(cron = "* * 1 * * *")
+//    @PostConstruct
+//    @Scheduled(cron = "* * 1 * * *")
     public void fetchData() throws IOException, InterruptedException {
         List<Tweet> newTweets = new ArrayList<>();
         HttpClient client = HttpClient.newHttpClient();

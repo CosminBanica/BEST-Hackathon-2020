@@ -28,8 +28,6 @@
 
     <table class="table">
         <tr>
-            <th>#</th>
-            <th>Source</th>
             <th>Author</th>
             <th>Title</th>
             <th>Description</th>
@@ -50,9 +48,6 @@
 <!--            <th>More</th>-->
 <!--        </tr>-->
         <tr th:each="newsArticle : ${covidNews}">
-            <td th:text="${newsArticle.getId()}"></td>
-            <td th:text="${newsArticle.getSourceName()}"></td>
-            <td th:text="${newsArticle.getAuthor()}"></td>
             <td th:text="${newsArticle.getArticleTitle()}"></td>
             <td th:text="${newsArticle.getDescription()}"></td>
             <td th:text="${newsArticle.getUrl()}"></td>

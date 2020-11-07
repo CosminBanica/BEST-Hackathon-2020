@@ -73,20 +73,20 @@ public class HomeController {
         return "news";
     }
 
-    @Autowired
-    TweetStreamService tweetStreamService;
-
-    @Scheduled(fixedRate = 5000)
-    public void showTweets() {
-        tweetStreamService.fillList();
-    }
-
-    @GetMapping("/tweets")
-    public String tweets(Model model) {
-        Queue<Tweet> newTweets = tweetStreamService.getTweets();
-        model.addAttribute("covidTweets", newTweets);
-        return "tweets";
-    }
+//    @Autowired
+//    TweetStreamService tweetStreamService;
+//
+//    @Scheduled(fixedRate = 5000)
+//    public void showTweets() {
+//        tweetStreamService.fillList();
+//    }
+//
+//    @GetMapping("/tweets")
+//    public String tweets(Model model) {
+//        Queue<Tweet> newTweets = tweetStreamService.getTweets();
+//        model.addAttribute("covidTweets", newTweets);
+//        return "tweets";
+//    }
 
 
     @GetMapping(value="/do-ordered")
