@@ -45,3 +45,49 @@ body {
     color: #dbdec5;
     cursor: pointer;
 }
+
+.homeBody {
+    height: 94.3vh;
+    width: 100vw;
+    align-items: center;
+    background-color: #e3e0cc;
+}
+
+.titleText {
+    font-family: 'Montserrat', sans-serif;
+    width: 70vw;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 400%;
+    top: 20vh;
+    left: 14vw;
+}
+
+.teamName {
+    font-family: 'Montserrat', sans-serif;
+    width: 70vw;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 300%;
+    top: 30vh;
+    left: 25vw;
+    color: rgb(44, 110, 45);
+}
+
+.description {
+    font-family: 'Raleway', sans-serif;
+    width: 40vw;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 150%;
+    top: 50vh;
+    left: 28vw;
+    color: black;
+    text-align: center;
+}
