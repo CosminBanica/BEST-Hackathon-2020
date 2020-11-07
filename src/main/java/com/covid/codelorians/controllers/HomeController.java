@@ -1,7 +1,9 @@
 package com.covid.codelorians.controllers;
 
 import com.covid.codelorians.models.LocationStats;
+import com.covid.codelorians.models.VaccineStats;
 import com.covid.codelorians.services.CoronavirusDataService;
+import com.covid.codelorians.services.VaccineDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +34,16 @@ public class HomeController {
         model.addAttribute("totalReportedCases", totalReportedCases);
         model.addAttribute("totalNewCases", totalNewCases);
         return "reported-cases";
+    }
+
+    @Autowired
+    VaccineDataService vaccineDataService;
+
+    @GetMapping("/vaccines")
+    public String vaccines(Model model) {
+        List<VaccineStats> allStats = vaccineDataService.allVaccines;
+        model.addAttribute("vaccineStats", allStats);
+        return "vaccines";
     }
 
     @GetMapping(value="/do-alphabetical")
