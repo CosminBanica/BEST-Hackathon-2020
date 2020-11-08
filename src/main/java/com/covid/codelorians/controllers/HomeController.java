@@ -97,7 +97,7 @@ public class HomeController {
 
     @GetMapping("/tweets")
     public String tweets(Model model) {
-        Queue<Tweet> newTweets = tweetStreamService.getTweets();
+        List<Tweet> newTweets = tweetStreamService.getTweets();
         model.addAttribute("covidTweets", newTweets);
         return "tweets";
     }

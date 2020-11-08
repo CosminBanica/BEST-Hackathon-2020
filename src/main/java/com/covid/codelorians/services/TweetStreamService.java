@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 public class TweetStreamService {
     private static String DATA_URL = "https://api.twitter.com/2/tweets/search/stream?expansions=author_id&user.fields=profile_image_url";
     private InputStream inputStream;
-    private Queue<Tweet> tweets = new LinkedList<>();
+    private List<Tweet> tweets = new ArrayList<>();
     Scanner scanner;
 
     @PostConstruct
@@ -58,15 +58,15 @@ public class TweetStreamService {
             JSONObject tweetJson = new JSONObject(tweetData);
 
             if (tweets.size() < 10) {
-                tweets.add(new Tweet(tweetJson));
+                tweets.add(0 , new Tweet(tweetJson));
             } else {
-                tweets.remove();
-                tweets.add(new Tweet(tweetJson));
+                tweets.remove(tweets.size() - 1);
+                tweets.add(0, new Tweet(tweetJson));
             }
         }
     }
 
-    public Queue<Tweet> getTweets() {
+    public List<Tweet> getTweets() {
         return tweets;
     }
 }
