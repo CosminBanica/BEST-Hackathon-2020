@@ -39,6 +39,7 @@
         <tr th:each="newsArticle : ${covidNews}">
             <div class="news">
 <!--                <td th:text="${newsArticle.getId()}"></td>-->
+                <img th:src="@{${newsArticle.getImageUrl()}}" style="position: relative; width: 60%; margin-left: 20%">
                 <h1 class="headline" th:text="${newsArticle.getArticleTitle()}"></h1>
                 <h1 class="source" th:text="${newsArticle.getSourceName() != 'null'} ? 'Source: ' + ${newsArticle.getSourceName()} : ''"></h1>
                 <h1 class="source" th:text="${newsArticle.getAuthor() != 'null'} ? 'Author: ' + ${newsArticle.getAuthor()} : ''"></h1>
