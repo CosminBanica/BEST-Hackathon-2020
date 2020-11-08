@@ -28,9 +28,9 @@
             <th>#</th>
             <th>Vaccine</th>
             <th>Mechanism</th>
-            <th>Sponsor</th>
+            <th>Sponsors</th>
             <th>Phase</th>
-            <th>Institution</th>
+            <th>Institutions</th>
             <th>Details</th>
         </tr>
         <tr th:each="vaccineStat : ${vaccineStats}">
@@ -40,7 +40,7 @@
             <td th:text="${vaccineStat.getSponsor()}"></td>
             <td><progress th:value="${vaccineStat.getPhaseNr()}" max="4"></progress></td>
             <td th:text="${vaccineStat.getInstitution()}"></td>
-            <td><a th:href="@{/vaccineDetails (id=${vaccineStat.getId()})}">Details</a></td>
+            <td><a th:href="@{/vaccine (id=${vaccineStat.getId()})}">Details</a></td>
         </tr>
     </table>
 </div>

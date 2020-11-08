@@ -200,4 +200,24 @@ public class HomeController {
         model.addAttribute("deaths", "Today's new reported coronavirus deaths: " + myLocation.showNumber(coronavirusDataService.allDeaths.get(locationId).getLastIncrease()));
         return "country-stat";
     }
+
+    @GetMapping(value = "/details")
+    public String vaccineStat(Model model, HttpServletRequest request) {
+        int vaccineId = Integer.parseInt(request.getParameter("id"));
+        List<VaccineStats> vaccineStats = vaccineDataService.allVaccines;
+        VaccineStats myVaccine = vaccineStats.get(0);
+        for (VaccineStats vaccine : vaccineStats) {
+            if (vaccine.getId() == vaccineId) {
+                myVaccine = vaccine;
+                break;
+            }
+        }
+        model.addAttribute("vaccine", myVaccine.getCandidate());
+        model.addAttribute("mechanism", "Mechanism: " + myVaccine.getMechanism());
+        model.addAttribute("sponsors", "Sponsors: " + myVaccine.getSponsor());
+        model.addAttribute("phase", "Phase: " + myVaccine.getPhase());
+        model.addAttribute("institutions", "Institutions: " + myVaccine.getInstitution());
+        model.addAttribute("details", "Description: " + myVaccine.getDetails());
+        return "details";
+    }
 }

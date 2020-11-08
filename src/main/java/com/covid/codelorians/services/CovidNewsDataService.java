@@ -22,7 +22,7 @@ import java.util.List;
 
 @Service
 public class CovidNewsDataService {
-    private static String DATA_URL = "http://newsapi.org/v2/top-headlines?q=covid&country=us&sortBy=popularity&from=2020-11-01&apiKey=09557c8940c84838990718288bf93000";
+    private static String DATA_URL = "http://newsapi.org/v2/top-headlines?q=covid&country=us&sortBy=popularity&from=2020-11-01&apiKey=7a964c61be4c4d839e265125eee7cdbe";
     public List<CovidArticle> allArticles = new ArrayList<>();
 
     @PostConstruct
