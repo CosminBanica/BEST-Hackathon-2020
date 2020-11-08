@@ -194,6 +194,7 @@ public class HomeController {
         model.addAttribute("casesString", "Today's new reported coronavirus cases: " + myLocation.showNumber(myLocation.getDelta()));
         model.addAttribute("deathArray", coronavirusDataService.allDeaths.get(locationId).getExtraDeaths());
         model.addAttribute("deaths", "Today's new reported coronavirus deaths: " + myLocation.showNumber(coronavirusDataService.allDeaths.get(locationId).getLastIncrease()));
+        model.addAttribute("growth", "Growth rate: " + myLocation.getIncShow());
         return "country-stat";
     }
 

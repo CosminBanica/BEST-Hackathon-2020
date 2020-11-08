@@ -79,7 +79,8 @@
 
         <div class="jumbotron" style="background-color: #3c6634; color: white;">
             <h1 class="display-4" th:text="${location.getCountry()}"></h1>
-            <p class="lead" th:text="${totalCases}"> Total cases reported since today</p>
+            <p class="lead" th:text="${totalCases}"></p>
+            <p class="lead" th:text="${growth}"></p>
         </div>
 
         <h1 class="countryLine" th:text="${casesString}">Today's new cases</h1>

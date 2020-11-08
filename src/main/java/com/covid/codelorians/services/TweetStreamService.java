@@ -40,7 +40,7 @@ public class TweetStreamService {
 
         HttpURLConnection connection = (HttpURLConnection) new URL(DATA_URL).openConnection();
         connection.setRequestMethod("GET");
-        connection.setRequestProperty("Authorization", "Bearer AAAAAAAAAAAAAAAAAAAAAHAUJgEAAAAA1Ngtxq2HiFbcg9glAl4bzvzMFkE%3DP2hiio2HK90BJnR8TG2QMmA1nfVV3WHF2cloLPGQ5OJa4YmAtQ");
+        connection.setRequestProperty("Authorization", "Bearer AAAAAAAAAAAAAAAAAAAAAHAUJgEAAAAADesdDLsgynqzM1xRE%2B%2FzfchWkGo%3D9veFnzUzntfU1ivYFS65OlmvHPDNtNw8PvDlQqVDxxHZsrE40c");
 
         inputStream = connection.getInputStream();
         scanner = new Scanner(inputStream, StandardCharsets.UTF_8.name());
