@@ -2,18 +2,14 @@ package com.covid.codelorians.controllers;
 
 import com.covid.codelorians.models.CovidArticle;
 import com.covid.codelorians.models.LocationStats;
-import com.covid.codelorians.models.Tweet;
 import com.covid.codelorians.models.VaccineStats;
 import com.covid.codelorians.services.CoronavirusDataService;
 import com.covid.codelorians.services.CovidNewsDataService;
-import com.covid.codelorians.services.TweetStreamService;
 import com.covid.codelorians.services.VaccineDataService;
 import com.covid.codelorians.utils.NumberUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.util.Pair;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -182,7 +178,7 @@ public class HomeController {
         return "reported-cases";
     }
 
-    @GetMapping(value = "/country")
+    @GetMapping(value="/country")
     public String countryStat(Model model, HttpServletRequest request) {
         int locationId = Integer.parseInt(request.getParameter("id"));
         List<LocationStats> locations = coronavirusDataService.allStates;
@@ -201,11 +197,12 @@ public class HomeController {
         return "country-stat";
     }
 
-    @GetMapping(value = "/details")
+    @GetMapping(value="/vaccine-details")
     public String vaccineStat(Model model, HttpServletRequest request) {
         int vaccineId = Integer.parseInt(request.getParameter("id"));
         List<VaccineStats> vaccineStats = vaccineDataService.allVaccines;
         VaccineStats myVaccine = vaccineStats.get(0);
+
         for (VaccineStats vaccine : vaccineStats) {
             if (vaccine.getId() == vaccineId) {
                 myVaccine = vaccine;
@@ -215,9 +212,9 @@ public class HomeController {
         model.addAttribute("vaccine", myVaccine.getCandidate());
         model.addAttribute("mechanism", "Mechanism: " + myVaccine.getMechanism());
         model.addAttribute("sponsors", "Sponsors: " + myVaccine.getSponsor());
-        model.addAttribute("phase", "Phase: " + myVaccine.getPhase());
+        model.addAttribute("phase", myVaccine.getPhase());
         model.addAttribute("institutions", "Institutions: " + myVaccine.getInstitution());
         model.addAttribute("details", "Description: " + myVaccine.getDetails());
-        return "details";
+        return "vaccine-details";
     }
 }
