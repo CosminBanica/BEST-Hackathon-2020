@@ -12,12 +12,29 @@ body {
     background-color: #f7f7f0;
 }
 
+.leftBar {
+    position: absolute;
+    height: 530vh;
+    width: 10vw;
+    float: left;
+    background-color: darkgreen;
+}
+
+.rightBar {
+    position: absolute;
+    height: 530vh;
+    width: 10vw;
+    float: right;
+    right: 0%;
+    background-color: darkgreen;
+}
+
 .news {
     /*width: 50vw;*/
     position: relative;
     border-style: none;
     border-color: darkgreen;
-    background-color: #d8ebdb;
+    background-color: #f7f7f0;
     margin-top: 10vh;
     height: 75vh;
     padding-top: 2%;

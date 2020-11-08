@@ -21,10 +21,14 @@
     <a class="topbutton" th:onclick="|window.location.href='/tweets'|">Tweets</a>
     <a class="topbutton" href="#about">About</a>
 </div>
+<div class="leftBar"></div>
+<div class="rightBar"></div>
 <div class="container">
     <h1 class="pageTitle"><span style="color: darkgreen">Latest News</span> about Covid-19</h1>
 
-    <table class="table">
+    <hr style="color: darkgreen">
+
+    <table class="table table-bordered">
 <!--        <tr>-->
 <!--            <th>#</th>-->
 <!--            <th>Source</th>-->
@@ -55,6 +59,7 @@
 <!--                <td th:text="${newsArticle.getImageUrl()}"></td>-->
 <!--                <td th:text="${newsArticle.getDate()}"></td>-->
 <!--                <td><a th:href="@{/vaccineDetails (id=${newsArticle.getId()})}">Details</a></td>-->
+                <hr style="position: relative; color: darkgreen; margin-top: 10vh; width: 20vw; left: -33%">
             </div>
         </tr>
     </table>
