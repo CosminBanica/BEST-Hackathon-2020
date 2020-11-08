@@ -11,6 +11,7 @@ import com.covid.codelorians.services.VaccineDataService;
 import com.covid.codelorians.utils.NumberUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.util.Pair;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -18,10 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 @Controller
 @EnableScheduling
@@ -62,6 +60,23 @@ public class HomeController {
 //    public String doAlphabetical(Model model) {
 //        return home(model);
 //    }
+
+    @GetMapping("/map")
+    public String map(Model model) {
+        List<Pair<String, Integer>> mapData = coronavirusDataService.mapData;
+        ArrayList<String> mapCountries = new ArrayList<>();
+        ArrayList<Integer> mapCases = new ArrayList<>();
+        for (int i = 0; i < mapData.size(); ++i) {
+            if(mapData.get(i).getFirst().equals("Korea, South")) {
+                continue;
+            }
+            mapCountries.add(mapData.get(i).getFirst());
+            mapCases.add(mapData.get(i).getSecond());
+        }
+        model.addAttribute("mapCountries", mapCountries);
+        model.addAttribute("mapCases", mapCases);
+        return "map";
+    }
 
     @Autowired
     CovidNewsDataService covidNewsDataService;
