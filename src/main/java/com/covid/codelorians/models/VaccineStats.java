@@ -2,13 +2,10 @@ package com.covid.codelorians.models;
 
 import org.json.JSONObject;
 
+// Class for storing data about vaccine candidates
 public class VaccineStats implements Comparable<VaccineStats> {
     private String candidate, mechanism, sponsor, phase, institution, details;
     private int id;
-
-    public int getId() {
-        return id;
-    }
 
     public VaccineStats(JSONObject object, int id) {
         candidate = object.getString("candidate");
@@ -18,6 +15,10 @@ public class VaccineStats implements Comparable<VaccineStats> {
         institution = object.getJSONArray("institutions").join(",");
         details = object.getString("details");
         this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getCandidate() {
@@ -44,6 +45,7 @@ public class VaccineStats implements Comparable<VaccineStats> {
         return details;
     }
 
+    // Obtains numeric value for Trial Phase
     public float getPhaseNr() {
         if (phase.equals("Phase 3")) {
             return 3;

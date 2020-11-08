@@ -85,7 +85,7 @@
 
         <h1 class="countryLine" th:text="${casesString}">Today's new cases</h1>
 
-        <input id="country" type="hidden" th:value="${location.getDailyCases()}"/>
+        <input id="country" type="hidden" th:value="${location.getExtraCases()}"/>
         <input id="deathsList" type="hidden" th:value="${deathArray}"/>
 
         <div id="curve_chart" style="position: relative; width: 50vw; height: 50vh;left: 4vw; margin-top: 5vh; margin-bottom: 10vh; border-style: solid; border-color: black"></div>

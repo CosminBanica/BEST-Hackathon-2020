@@ -1,7 +1,6 @@
 package com.covid.codelorians.services;
 
-import com.covid.codelorians.models.DeathStats;
-import com.covid.codelorians.models.LocationStats;
+import com.covid.codelorians.models.CountryStats;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.data.util.Pair;
@@ -17,85 +16,78 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 
+import static com.covid.codelorians.constants.Constants.CASES_URL;
+import static com.covid.codelorians.constants.Constants.DEATHS_URL;
+
+// Service handling historical and latest data for infections and deaths
 @Service
 public class CoronavirusDataService {
-
-    private static String CASES_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
-    private static String DEATHS_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv";
-    public List<LocationStats> allStates = new ArrayList<>();
-    public List<DeathStats> allDeaths = new ArrayList<>();
+    public List<CountryStats> allStats = new ArrayList<>();
     public List<Pair<String, Integer>> mapData = new ArrayList<>();
 
     @PostConstruct
     @Scheduled(cron = "* 1 * * * *")
     public void fetchData() throws IOException, InterruptedException {
 
-        // New cases
-        int id = 0;
-        List<LocationStats> newStats = new ArrayList<>();
+        // Cases
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(CASES_URL)).build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         StringReader reader = new StringReader(response.body());
         Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
+
+        ArrayList<String> states = new ArrayList<>();
+        ArrayList<String> countries = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> cases = new ArrayList<>();
+
         for (CSVRecord record : records) {
-            LocationStats locationStat = new LocationStats();
-            locationStat.setState(record.get("Province/State"));
-            locationStat.setCountry(record.get("Country/Region"));
-            locationStat.setId(id);
-            id++;
-            locationStat.setLatestTotalCases(Integer.parseInt(record.get(record.size() - 1)));
-            int delta = Integer.parseInt(record.get(record.size() - 1)) - Integer.parseInt(record.get(record.size() - 2));
-            locationStat.setDelta(delta);
-            List<Integer> cases = new ArrayList<>();
-            for (int i = 4; i < record.size(); i++) {
-                cases.add(Integer.parseInt(record.get(i)));
+            states.add(record.get("Province/State"));
+            countries.add(record.get("Country/Region"));
+            ArrayList<Integer> temp = new ArrayList<>();
+            for (int i = 4; i < record.size(); ++i) {
+                temp.add(Integer.parseInt(record.get(i)));
             }
-            locationStat.setCases(cases);
-            locationStat.analize();
-//            System.out.println(cases);
-            newStats.add(locationStat);
+            cases.add(temp);
         }
-        this.allStates = newStats;
 
         // Deaths
-        List<DeathStats> newDeaths = new ArrayList<>();
         request = HttpRequest.newBuilder().uri(URI.create(DEATHS_URL)).build();
         response = client.send(request, HttpResponse.BodyHandlers.ofString());
         reader = new StringReader(response.body());
         records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
-        id = 0;
-        String state, country;
+
+        ArrayList<ArrayList<Integer>> deaths = new ArrayList<>();
+
         for (CSVRecord record : records) {
-            state = record.get("Province/State");
-            country = record.get("Country/Region");
-            ArrayList<Integer> deaths = new ArrayList<>();
+            ArrayList<Integer> temp = new ArrayList<>();
             for (int i = 4; i < record.size(); ++i) {
-                deaths.add(Integer.parseInt(record.get(i)));
+                temp.add(Integer.parseInt(record.get(i)));
             }
-            newDeaths.add(new DeathStats(deaths, state, country, id++));
+            deaths.add(temp);
         }
-        allDeaths = newDeaths;
+
+        for (int i = 0; i < deaths.size(); ++i) {
+            allStats.add(new CountryStats(states.get(i), countries.get(i), i, cases.get(i), deaths.get(i)));
+        }
 
         // Process data for map
-        mapData = setMap(LocationStats::getLatestTotalCases);
+        mapData = setMap(CountryStats::getTotalCases);
     }
 
-    private List<Pair<String, Integer>> setMap(Function<LocationStats, Integer> f) {
+    private List<Pair<String, Integer>> setMap(Function<CountryStats, Integer> f) {
         List<Pair<String, Integer>> mapData = new ArrayList<>();
-        mapData.add(Pair.of(allStates.get(0).getCountry(), f.apply(allStates.get(0))));
+        mapData.add(Pair.of(allStats.get(0).getCountry(), f.apply(allStats.get(0))));
         Pair<String, Integer> lastEntry = Pair.of("", 0);
-        for (int i = 1; i < allStates.size(); ++i) {
-            LocationStats entry = allStates.get(i);
+        for (int i = 1; i < allStats.size(); ++i) {
+            CountryStats entry = allStats.get(i);
             if (entry.getCountry().equals(lastEntry.getFirst())) {
-                int temp = lastEntry.getSecond() + entry.getLatestTotalCases();
+                int temp = lastEntry.getSecond() + entry.getTotalCases();
                 mapData.set(mapData.size() - 1, Pair.of(entry.getCountry(), temp));
                 lastEntry = Pair.of(lastEntry.getFirst(), temp);
             } else {
-                lastEntry = Pair.of(entry.getCountry(), entry.getLatestTotalCases());
+                lastEntry = Pair.of(entry.getCountry(), entry.getTotalCases());
                 mapData.add(lastEntry);
             }
         }

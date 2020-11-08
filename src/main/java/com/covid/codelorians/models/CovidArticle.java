@@ -2,10 +2,10 @@ package com.covid.codelorians.models;
 
 import org.json.JSONObject;
 
+// Class used for storing info about individual news articles
 public class CovidArticle {
     private String sourceName, author, articleTitle, description, url, imageUrl, date, content;
     private int id;
-
 
     public CovidArticle(JSONObject object, int id) {
         sourceName = object.getJSONObject("source").get("name").toString();

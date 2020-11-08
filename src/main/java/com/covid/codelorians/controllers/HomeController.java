@@ -1,7 +1,7 @@
 package com.covid.codelorians.controllers;
 
+import com.covid.codelorians.models.CountryStats;
 import com.covid.codelorians.models.CovidArticle;
-import com.covid.codelorians.models.LocationStats;
 import com.covid.codelorians.models.Tweet;
 import com.covid.codelorians.models.VaccineStats;
 import com.covid.codelorians.services.CoronavirusDataService;
@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
+import static com.covid.codelorians.models.CountryStats.getLatestGrandTotal;
+
 @Controller
 @EnableScheduling
 public class HomeController {
@@ -29,17 +31,16 @@ public class HomeController {
 
     @GetMapping("/reported-cases")
     public String home(Model model){
-        List<LocationStats> allStats = coronavirusDataService.allStates;
-        int totalNewCases = allStats.stream().mapToInt(LocationStats::getDelta).sum();
-        int totalReportedCases = allStats.stream().mapToInt(LocationStats::getLatestTotalCases).sum();
-        Collections.sort(allStats, LocationStats::compareAlpha);
+        List<CountryStats> allStats = coronavirusDataService.allStats;
+        int totalNewCases = allStats.stream().mapToInt(CountryStats::getLastCaseIncrease).sum();
+        int totalReportedCases = allStats.stream().mapToInt(stat -> stat.getTotalCases()).sum();
+        Collections.sort(allStats, CountryStats::compareAlpha);
         int index = 1;
-        for (LocationStats obj : allStats) {
-            obj.setPosition(index);
+        for (CountryStats obj : allStats) {
+            obj.setRank(index);
             index++;
         }
-        model.addAttribute("locationStats", allStats);
-        model.addAttribute("deathStats", coronavirusDataService.allDeaths);
+        model.addAttribute("countryStats", allStats);
         model.addAttribute("totalReportedCases", NumberUtil.bigNumberFormat(totalReportedCases));
         model.addAttribute("totalNewCases", NumberUtil.bigNumberFormat(totalNewCases));
         return "reported-cases";
@@ -87,35 +88,34 @@ public class HomeController {
         return "news";
     }
 
-    @Autowired
-    TweetStreamService tweetStreamService;
-
-    @Scheduled(fixedRate = 5000)
-    public void showTweets() {
-        tweetStreamService.fillList();
-    }
-
-    @GetMapping("/tweets")
-    public String tweets(Model model) {
-        Queue<Tweet> newTweets = tweetStreamService.getTweets();
-        model.addAttribute("covidTweets", newTweets);
-        return "tweets";
-    }
+//    @Autowired
+//    TweetStreamService tweetStreamService;
+//
+//    @Scheduled(fixedRate = 5000)
+//    public void showTweets() {
+//        tweetStreamService.fillList();
+//    }
+//
+//    @GetMapping("/tweets")
+//    public String tweets(Model model) {
+//        Queue<Tweet> newTweets = tweetStreamService.getTweets();
+//        model.addAttribute("covidTweets", newTweets);
+//        return "tweets";
+//    }
 
 
     @GetMapping(value="/do-ordered")
     public String doOrdered(Model model) {
-        List<LocationStats> allStats = coronavirusDataService.allStates;
-        int totalNewCases = allStats.stream().mapToInt(stat -> stat.getDelta()).sum();
-        int totalReportedCases = allStats.stream().mapToInt(stat -> stat.getLatestTotalCases()).sum();
-        Collections.sort(allStats);
+        List<CountryStats> allStats = coronavirusDataService.allStats;
+        int totalNewCases = allStats.stream().mapToInt(stat -> stat.getLastCaseIncrease()).sum();
+        int totalReportedCases = allStats.stream().mapToInt(stat -> stat.getTotalCases()).sum();
+        Collections.sort(allStats, Collections.reverseOrder());
         int index = 1;
-        for (LocationStats obj : allStats) {
-            obj.setPosition(index);
+        for (CountryStats obj : allStats) {
+            obj.setRank(index);
             index++;
         }
-        model.addAttribute("locationStats", allStats);
-        model.addAttribute("deathStats", coronavirusDataService.allDeaths);
+        model.addAttribute("countryStats", allStats);
         model.addAttribute("totalReportedCases", NumberUtil.bigNumberFormat(totalReportedCases));
         model.addAttribute("totalNewCases", NumberUtil.bigNumberFormat(totalNewCases));
         return "reported-cases";
@@ -123,17 +123,16 @@ public class HomeController {
 
     @GetMapping(value="/do-ordered-total")
     public String doOrderedTotal(Model model) {
-        List<LocationStats> allStats = coronavirusDataService.allStates;
-        int totalNewCases = allStats.stream().mapToInt(stat -> stat.getDelta()).sum();
-        int totalReportedCases = allStats.stream().mapToInt(stat -> stat.getLatestTotalCases()).sum();
-        Collections.sort(allStats, Comparator.comparing(LocationStats::getLatestTotalCases).reversed());
+        List<CountryStats> allStats = coronavirusDataService.allStats;
+        int totalNewCases = allStats.stream().mapToInt(stat -> stat.getLastCaseIncrease()).sum();
+        int totalReportedCases = allStats.stream().mapToInt(stat -> stat.getTotalCases()).sum();
+        Collections.sort(allStats, Comparator.comparing(CountryStats::getTotalCases).reversed());
         int index = 1;
-        for (LocationStats obj : allStats) {
-            obj.setPosition(index);
+        for (CountryStats obj : allStats) {
+            obj.setRank(index);
             index++;
         }
-        model.addAttribute("locationStats", allStats);
-        model.addAttribute("deathStats", coronavirusDataService.allDeaths);
+        model.addAttribute("countryStats", allStats);
         model.addAttribute("totalReportedCases", NumberUtil.bigNumberFormat(totalReportedCases));
         model.addAttribute("totalNewCases", NumberUtil.bigNumberFormat(totalNewCases));
         return "reported-cases";
@@ -141,20 +140,19 @@ public class HomeController {
 
     @GetMapping(value="/do-ordered-deaths")
     public String doOrderedDeaths(Model model) {
-        List<LocationStats> allStats = coronavirusDataService.allStates;
-        int totalNewCases = allStats.stream().mapToInt(stat -> stat.getDelta()).sum();
-        int totalReportedCases = allStats.stream().mapToInt(stat -> stat.getLatestTotalCases()).sum();
-        for (LocationStats obj : allStats) {
-            obj.setNewDeaths(coronavirusDataService.allDeaths.get(obj.getId()).getLastIncrease());
-        }
-        Collections.sort(allStats, Comparator.comparing(LocationStats::getNewDeaths).reversed());
+        List<CountryStats> allStats = coronavirusDataService.allStats;
+        int totalNewCases = allStats.stream().mapToInt(stat -> stat.getLastCaseIncrease()).sum();
+        int totalReportedCases = allStats.stream().mapToInt(stat -> stat.getTotalCases()).sum();
+//        for (CountryStats obj : allStats) {
+//            System.out.println(obj.getCountry() + " " + obj.getLastDeathIncrease());
+//        }
+        Collections.sort(allStats, Comparator.comparing(CountryStats::getLastDeathIncrease).reversed());
         int index = 1;
-        for (LocationStats obj : allStats) {
-            obj.setPosition(index);
+        for (CountryStats obj : allStats) {
+            obj.setRank(index);
             index++;
         }
-        model.addAttribute("locationStats", allStats);
-        model.addAttribute("deathStats", coronavirusDataService.allDeaths);
+        model.addAttribute("countryStats", allStats);
         model.addAttribute("totalReportedCases", NumberUtil.bigNumberFormat(totalReportedCases));
         model.addAttribute("totalNewCases", NumberUtil.bigNumberFormat(totalNewCases));
         return "reported-cases";
@@ -162,20 +160,16 @@ public class HomeController {
 
     @GetMapping(value="/do-ordered-deaths-total")
     public String doOrderedDeathsTotal(Model model) {
-        List<LocationStats> allStats = coronavirusDataService.allStates;
-        int totalNewCases = allStats.stream().mapToInt(stat -> stat.getDelta()).sum();
-        int totalReportedCases = allStats.stream().mapToInt(stat -> stat.getLatestTotalCases()).sum();
-        for (LocationStats obj : allStats) {
-            obj.setTotalDeaths(coronavirusDataService.allDeaths.get(obj.getId()).getTotal());
-        }
-        Collections.sort(allStats, Comparator.comparing(LocationStats::getTotalDeaths).reversed());
+        List<CountryStats> allStats = coronavirusDataService.allStats;
+        int totalNewCases = allStats.stream().mapToInt(stat -> stat.getLastCaseIncrease()).sum();
+        int totalReportedCases = allStats.stream().mapToInt(stat -> stat.getTotalCases()).sum();
+        Collections.sort(allStats, Comparator.comparing(CountryStats::getTotalDeaths).reversed());
         int index = 1;
-        for (LocationStats obj : allStats) {
-            obj.setPosition(index);
+        for (CountryStats obj : allStats) {
+            obj.setRank(index);
             index++;
         }
-        model.addAttribute("locationStats", allStats);
-        model.addAttribute("deathStats", coronavirusDataService.allDeaths);
+        model.addAttribute("countryStats", allStats);
         model.addAttribute("totalReportedCases", NumberUtil.bigNumberFormat(totalReportedCases));
         model.addAttribute("totalNewCases", NumberUtil.bigNumberFormat(totalNewCases));
         return "reported-cases";
@@ -184,20 +178,20 @@ public class HomeController {
     @GetMapping(value="/country")
     public String countryStat(Model model, HttpServletRequest request) {
         int locationId = Integer.parseInt(request.getParameter("id"));
-        List<LocationStats> locations = coronavirusDataService.allStates;
-        LocationStats myLocation = new LocationStats();
-        for (LocationStats location : locations) {
+        List<CountryStats> locations = coronavirusDataService.allStats;
+        CountryStats myLocation = locations.get(0);
+        for (CountryStats location : locations) {
             if (location.getId() == locationId) {
                 myLocation = location;
                 break;
             }
         }
         model.addAttribute("location", myLocation);
-        model.addAttribute("totalCases", "Total cases: " + myLocation.showNumber(myLocation.getLatestTotalCases()));
-        model.addAttribute("casesString", "Today's new reported coronavirus cases: " + myLocation.showNumber(myLocation.getDelta()));
-        model.addAttribute("deathArray", coronavirusDataService.allDeaths.get(locationId).getExtraDeaths());
-        model.addAttribute("deaths", "Today's new reported coronavirus deaths: " + myLocation.showNumber(coronavirusDataService.allDeaths.get(locationId).getLastIncrease()));
-        model.addAttribute("growth", "Growth rate: " + myLocation.getIncShow());
+        model.addAttribute("totalCases", "Total cases: " + myLocation.showNumber(myLocation.getTotalCases()));
+        model.addAttribute("casesString", "Today's new reported coronavirus cases: " + myLocation.showNumber(myLocation.getLastCaseIncrease()));
+        model.addAttribute("deathArray", myLocation.getExtraDeaths());
+        model.addAttribute("deaths", "Today's new reported coronavirus deaths: " + myLocation.getLastDeathIncrease());
+        model.addAttribute("growth", "Growth rate: " + myLocation.getProportion());
         return "country-stat";
     }
 

@@ -48,16 +48,16 @@
             <th style="text-align: center">New Deaths</th>
             <th>Statistics</th>
         </tr>
-        <tr th:each="locationStat : ${locationStats}">
-            <td th:text="${locationStat.getPosition()}"></td>
-            <td th:text="${locationStat.getCountry()}"></td>
-            <td th:text="${locationStat.getState()}"></td>
-            <td style="text-align: center" th:text="${locationStat.showNumber(locationStat.getLatestTotalCases())}"></td>
-            <td style="text-align: center" th:text="${locationStat.showNumber(locationStat.getDelta())}"></td>
-            <td style="text-align: center" th:text="${locationStat.getIncShow()}"></td>
-            <td style="text-align: center" th:text="${locationStat.showNumber(deathStats.get(locationStat.getId()).getTotal())}"></td>
-            <td style="text-align: center" th:text="${locationStat.showNumber(deathStats.get(locationStat.getId()).getLastIncrease())}"></td>
-            <td style="text-align: center"><a th:href="@{/country (id=${locationStat.getId()})}">View</a></td>
+        <tr th:each="stat : ${countryStats}">
+            <td th:text="${stat.getRank()}"></td>
+            <td th:text="${stat.getCountry()}"></td>
+            <td th:text="${stat.getState()}"></td>
+            <td style="text-align: center" th:text="${stat.showNumber(stat.getTotalCases())}"></td>
+            <td style="text-align: center" th:text="${stat.showNumber(stat.getLastCaseIncrease())}"></td>
+            <td style="text-align: center" th:text="${stat.getProportion()}"></td>
+            <td style="text-align: center" th:text="${stat.showNumber(stat.getTotalDeaths())}"></td>
+            <td style="text-align: center" th:text="${stat.showNumber(stat.getLastDeathIncrease())}"></td>
+            <td style="text-align: center"><a th:href="@{/country (id=${stat.getId()})}">View</a></td>
         </tr>
     </table>
 </div>

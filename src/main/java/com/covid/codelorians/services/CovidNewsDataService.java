@@ -1,7 +1,6 @@
 package com.covid.codelorians.services;
 
 import com.covid.codelorians.models.CovidArticle;
-import com.covid.codelorians.models.LocationStats;
 import com.covid.codelorians.models.VaccineStats;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -20,9 +19,11 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.covid.codelorians.constants.Constants.NEWS_URL;
+
+// Service for collecting Covid News from API
 @Service
 public class CovidNewsDataService {
-    private static String DATA_URL = "http://newsapi.org/v2/top-headlines?q=covid&country=us&sortBy=popularity&from=2020-11-01&apiKey=7a964c61be4c4d839e265125eee7cdbe";
     public List<CovidArticle> allArticles = new ArrayList<>();
 
     @PostConstruct
@@ -30,12 +31,11 @@ public class CovidNewsDataService {
     public void fetchData() throws IOException, InterruptedException {
         List<CovidArticle> newArticles = new ArrayList<>();
         HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(DATA_URL)).build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(NEWS_URL)).build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         JSONObject obj = new JSONObject(response.body());
         JSONArray arr = obj.getJSONArray("articles");
-
 
         for (int i = 0; i < arr.length(); i++) {
             newArticles.add(new CovidArticle(arr.getJSONObject(i), i + 1));
