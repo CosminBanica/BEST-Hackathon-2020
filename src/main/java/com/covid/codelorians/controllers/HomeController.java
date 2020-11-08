@@ -2,14 +2,17 @@ package com.covid.codelorians.controllers;
 
 import com.covid.codelorians.models.CovidArticle;
 import com.covid.codelorians.models.LocationStats;
+import com.covid.codelorians.models.Tweet;
 import com.covid.codelorians.models.VaccineStats;
 import com.covid.codelorians.services.CoronavirusDataService;
 import com.covid.codelorians.services.CovidNewsDataService;
+import com.covid.codelorians.services.TweetStreamService;
 import com.covid.codelorians.services.VaccineDataService;
 import com.covid.codelorians.utils.NumberUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -84,20 +87,20 @@ public class HomeController {
         return "news";
     }
 
-//    @Autowired
-//    TweetStreamService tweetStreamService;
-//
-//    @Scheduled(fixedRate = 5000)
-//    public void showTweets() {
-//        tweetStreamService.fillList();
-//    }
-//
-//    @GetMapping("/tweets")
-//    public String tweets(Model model) {
-//        Queue<Tweet> newTweets = tweetStreamService.getTweets();
-//        model.addAttribute("covidTweets", newTweets);
-//        return "tweets";
-//    }
+    @Autowired
+    TweetStreamService tweetStreamService;
+
+    @Scheduled(fixedRate = 5000)
+    public void showTweets() {
+        tweetStreamService.fillList();
+    }
+
+    @GetMapping("/tweets")
+    public String tweets(Model model) {
+        Queue<Tweet> newTweets = tweetStreamService.getTweets();
+        model.addAttribute("covidTweets", newTweets);
+        return "tweets";
+    }
 
 
     @GetMapping(value="/do-ordered")
