@@ -4,6 +4,7 @@ import com.covid.codelorians.models.DeathStats;
 import com.covid.codelorians.models.LocationStats;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.data.util.Pair;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 @Service
 public class CoronavirusDataService {
@@ -24,6 +27,7 @@ public class CoronavirusDataService {
     private static String DEATHS_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv";
     public List<LocationStats> allStates = new ArrayList<>();
     public List<DeathStats> allDeaths = new ArrayList<>();
+    public List<Pair<String, Integer>> mapData = new ArrayList<>();
 
     @PostConstruct
     @Scheduled(cron = "* 1 * * * *")
@@ -75,5 +79,26 @@ public class CoronavirusDataService {
             newDeaths.add(new DeathStats(deaths, state, country, id++));
         }
         allDeaths = newDeaths;
+
+        // Process data for map
+        mapData = setMap(LocationStats::getLatestTotalCases);
+    }
+
+    private List<Pair<String, Integer>> setMap(Function<LocationStats, Integer> f) {
+        List<Pair<String, Integer>> mapData = new ArrayList<>();
+        mapData.add(Pair.of(allStates.get(0).getCountry(), f.apply(allStates.get(0))));
+        Pair<String, Integer> lastEntry = Pair.of("", 0);
+        for (int i = 1; i < allStates.size(); ++i) {
+            LocationStats entry = allStates.get(i);
+            if (entry.getCountry().equals(lastEntry.getFirst())) {
+                int temp = lastEntry.getSecond() + entry.getLatestTotalCases();
+                mapData.set(mapData.size() - 1, Pair.of(entry.getCountry(), temp));
+                lastEntry = Pair.of(lastEntry.getFirst(), temp);
+            } else {
+                lastEntry = Pair.of(entry.getCountry(), entry.getLatestTotalCases());
+                mapData.add(lastEntry);
+            }
+        }
+        return mapData;
     }
 }
